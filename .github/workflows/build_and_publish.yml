@@ -3,13 +3,17 @@ name: Publish
 on:
   workflow_dispatch:
     inputs:
+      maven_url: 
+        required: true
+        description: 'Maven URL'
+        default: 'https://repo.blucobalt.dev/repositories/maven-halotroop'
       maven_username:
         required: true
-        description: 'Your blucobalt.dev Maven username.'
+        description: 'Your maven username.'
         default: 'halotroop2288'
       maven_password:
         required: true
-        description: 'Your blucobalt.dev Maven password'
+        description: 'Your maven password'
         default: ''
 
 jobs:
@@ -34,7 +38,7 @@ jobs:
       - name: Publish to Maven
         run: ./gradlew publish
         env:
-          MAVEN_PUBLISH_TOKEN: ${{ secrets.TOKEN }}
           BUILD_NUMBER: ${{ steps.buildnumber.outputs.build_number }}
+          MAVEN_URL: ${{ github.input.event.maven_url }}
           MAVEN_USERNAME: ${{ github.input.event.maven_username }}
           MAVEN_PASSWORD: ${{ github.input.event.maven_password }}
